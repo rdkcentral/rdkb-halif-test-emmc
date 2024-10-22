@@ -28,14 +28,15 @@ ifeq ($(TARGET),)
 $(info TARGET NOT SET )
 $(info TARGET FORCED TO Linux)
 TARGET=linux
+CFLAGS = -DBUILD_LINUX
 SRC_DIRS += $(ROOT_DIR)/skeletons/src
 endif
 
 $(info TARGET [$(TARGET)])
 
-ifeq ($(TARGET),arm)
 HAL_LIB_DIR := $(ROOT_DIR)/libs
-YLDFLAGS = -Wl,-rpath,$(HAL_LIB_DIR) -L$(HAL_LIB_DIR) -lhal_xxx
+ifeq ($(TARGET),arm)
+YLDFLAGS = -Wl,-rpath,$(HAL_LIB_DIR) -L$(HAL_LIB_DIR) -lhal_emmc
 endif
 
 .PHONY: clean list all
@@ -47,6 +48,7 @@ export INC_DIRS
 export TARGET
 export TOP_DIR
 export HAL_LIB_DIR
+export CFLAGS
 
 .PHONY: clean list build
 
